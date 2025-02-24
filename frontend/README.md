@@ -2,6 +2,12 @@
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
+# This is a project that I wanted to try Actix Web Rust, with Nuxt and Nuxt UI
+
+Make sure to run the Rust by running this command:
+
+```cargo run```
+
 ## Setup
 
 Make sure to install dependencies:
