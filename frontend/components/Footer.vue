@@ -1,16 +1,8 @@
 <script setup lang="ts">
 const links = [
   {
-    label: "About",
-    to: "/about",
-  },
-  {
-    label: "Contact",
-    to: "/blog",
-  },
-  {
-    label: "Blog",
-    to: "/blog",
+    label: "Rust With GraphQL",
+    to: "/rustGraphQL",
   },
 ];
 </script>

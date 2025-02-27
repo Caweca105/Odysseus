@@ -6,29 +6,9 @@ const links = [
     to: "/",
   },
   {
-    label: "About",
+    label: "Rust With GraphQL",
     icon: "i-heroicons-book-open",
-    to: "/about",
-  },
-  {
-    label: "Projects",
-    icon: "i-heroicons-square-3-stack-3d",
-    to: "/projects",
-  },
-  {
-    label: "Planning",
-    icon: "i-heroicons-rocket-launch",
-    to: "/planning",
-  },
-  {
-    label: "Contact",
-    icon: "i-heroicons-rocket-launch",
-    to: "/contact",
-  },
-  {
-    label: "Blog",
-    icon: "i-heroicons-rocket-launch",
-    to: "/blog",
+    to: "/rustGraphQL",
   },
 ];
 </script>

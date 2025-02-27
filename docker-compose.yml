@@ -1,23 +1,28 @@
 services:
   postgres:
     image: postgres:16
+    container_name: postgres_db
     environment:
       POSTGRES_USER: diogolemos
-      POSTGRES_PASSWORD: Odysseus
-      POSTGRES_DB: Odysseus
+      POSTGRES_PASSWORD: vaporeon
+      POSTGRES_DB: vaporeon
     ports:
       - "5435:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-
+    restart: always
   backend:
-    build: ./backend
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend_api
     depends_on:
       - postgres
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgres://diogolemos:Odysseus@postgres:5432/Odysseus
+      DATABASE_URL: "postgres://diogolemos:vaporeon@postgres:5432/vaporeon"
+    restart: always
 
   frontend:
     build:
@@ -25,6 +30,7 @@ services:
       dockerfile: Dockerfile
       args:
         NUXT_UI_PRO_LICENSE: "BB9C17E6-CD38-44FD-B804-441CA336D608"
+    container_name: frontend_app
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -32,6 +38,7 @@ services:
       - "3000:3000"
     depends_on:
       - backend
+    restart: always
 
 volumes:
   pgdata:
