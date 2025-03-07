@@ -4,6 +4,11 @@ const links = [
     label: "Rust With GraphQL",
     to: "/rustGraphQL",
   },
+  {
+    label: "Django With GraphQL",
+    icon: "i-heroicons-book-open",
+    to: "/djangoGraphQL",
+  },
 ];
 </script>
 

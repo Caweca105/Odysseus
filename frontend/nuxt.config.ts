@@ -4,7 +4,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // Set your backend URL via an environment variable, fallback to localhost
-      graphqlEndpoint: process.env.GRAPHQL_ENDPOINT || 'http://localhost:8000/graphql'
+      graphqlRustEndpoint: process.env.GRAPHQL_RUST_ENDPOINT || 'http://localhost:8000/graphql',
+      graphqlDjangoEndpoint: process.env.GRAPHQL_DJANGO_ENDPOINT || 'http://localhost:8001/graphql',
     }
   },
   compatibilityDate: '2024-11-01',
@@ -14,12 +15,12 @@ export default defineNuxtConfig({
   apollo: {
     clients: {
       default: {
-        // Use the runtime config variable for the endpoint
-        httpEndpoint: process.env.GRAPHQL_ENDPOINT || 'http://localhost:8000/graphql',
-        // Force Apollo Client to use POST for queries
-        httpLinkOptions: {
-          useGETForQueries: false,
-        },
+        httpEndpoint: process.env.GRAPHQL_RUST_ENDPOINT || 'http://localhost:8000/graphql',
+        httpLinkOptions: { useGETForQueries: false },
+      },
+      DjangoGraphQL: {
+        httpEndpoint: process.env.GRAPHQL_DJANGO_ENDPOINT || 'http://localhost:8001/graphql',
+        httpLinkOptions: { useGETForQueries: false },
       }
     },
   },

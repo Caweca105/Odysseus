@@ -1,6 +1,6 @@
 <template>
   <UContainer class="p-4">
-    <h1>Rust With GraphQL</h1>
+    <h1>Django with GraphQL</h1>
     <div v-if="loading">Loading users…</div>
     <div v-else-if="error">Error: {{ error.message }}</div>
     <div v-else>
@@ -13,7 +13,6 @@
           clearable
           class="max-w-md"
         />
-
         <UButton
           label="Create"
           @click="isCreateOpen = true"
@@ -40,6 +39,7 @@
         </template>
       </UTable>
 
+      <!-- Create User Modal -->
       <UModal v-model="isCreateOpen">
         <div class="p-4 mb-4 pb-4 flex flex-col gap-4">
           <h2>Create User</h2>
@@ -82,6 +82,7 @@
         </div>
       </UModal>
 
+      <!-- Edit User Modal -->
       <UModal v-model="isEditOpen">
         <div v-if="selectedUser" class="p-4 mb-4 pb-4 flex flex-col gap-4">
           <h2>Edit User</h2>
@@ -130,18 +131,9 @@ import gql from "graphql-tag";
 
 const isCreateOpen = ref(false);
 const isEditOpen = ref(false);
+const selectedUser = ref<any>(null);
 
-const selectedUser = ref<any>({
-  id: null,
-  email: "",
-  age: null,
-  comment: "",
-  location: "",
-  name: "",
-  preferences: "",
-});
-
-// GraphQL Query to fetch all users
+// GraphQL Query to fetch all users from the Django API
 const GET_USERS = gql`
   query GetUsers {
     users {
@@ -157,47 +149,65 @@ const GET_USERS = gql`
   }
 `;
 
-// GraphQL Mutations
+// GraphQL Mutations corresponding to our Django API schema
 const CREATE_USER = gql`
-  mutation CreateUser($input: NewUser!) {
+  mutation CreateUser($input: NewUserInput!) {
     createUser(input: $input) {
-      id
-      username
-      email
-      age
-      comment
-      location
-      name
-      preferences
+      user {
+        id
+        username
+        email
+        age
+        comment
+        location
+        name
+        preferences
+      }
     }
   }
 `;
 
 const UPDATE_USER = gql`
-  mutation UpdateUser($input: UpdateUser!) {
+  mutation UpdateUser($input: UpdateUserInput!) {
     updateUser(input: $input) {
-      id
-      username
-      email
-      age
-      comment
-      location
-      name
-      preferences
+      user {
+        id
+        username
+        email
+        age
+        comment
+        location
+        name
+        preferences
+      }
+      ok
     }
   }
 `;
 
 const DELETE_USER = gql`
-  mutation DeleteUser($id: ID!) {
-    deleteUser(id: $id)
+  mutation DeleteUser($id: Int!) {
+    deleteUser(id: $id) {
+      ok
+    }
   }
 `;
 
-const { result, loading, error, refetch } = useQuery(GET_USERS);
-const { mutate: createUserMutate } = useMutation(CREATE_USER);
-const { mutate: updateUserMutate } = useMutation(UPDATE_USER);
-const { mutate: deleteUserMutate } = useMutation(DELETE_USER);
+const { result, loading, error, refetch } = useQuery(GET_USERS, null, {
+  clientId: "DjangoGraphQL",
+});
+// Similarly, if you need to use the Django endpoint for mutations, add the clientId option:
+const { mutate: createUserMutate } = useMutation(CREATE_USER, {
+  clientId: "DjangoGraphQL",
+});
+
+const { mutate: updateUserMutate } = useMutation(UPDATE_USER, {
+  clientId: "DjangoGraphQL",
+});
+
+const { mutate: deleteUserMutate } = useMutation(DELETE_USER, {
+  clientId: "DjangoGraphQL",
+});
 
 const newUser = ref({
   username: "",
@@ -234,7 +244,7 @@ const isEmptyUser = (user: any) => {
 // Store the filter input
 const filter = ref("");
 
-// Compute filtered rows and add a "actions" property so that the actions column renders
+// Compute filtered rows and add an "actions" property so that the table renders the actions slot.
 const rowsWithActions = computed(() => {
   const users = (result.value?.users ?? []).filter(
     (user: any) => user && !isEmptyUser(user)
@@ -261,7 +271,6 @@ const createUser = async () => {
     name: "",
     preferences: "",
   };
-
   isCreateOpen.value = false;
   await refetch();
 };
@@ -279,11 +288,9 @@ const openModal = (user: any) => {
 
 const updateUser = async () => {
   if (!selectedUser.value) return;
-
   await updateUserMutate({
     input: {
-      // ✅ `input` object must include `id`
-      id: selectedUser.value.id,
+      id: Number(selectedUser.value.id), // convert id to a number
       email: selectedUser.value.email,
       age: selectedUser.value.age,
       comment: selectedUser.value.comment,
@@ -292,10 +299,7 @@ const updateUser = async () => {
       preferences: selectedUser.value.preferences,
     },
   });
-
-  isEditOpen.value = false; // Keep modal open until update is confirmed
-  await refetch(); // Refresh user data
+  isEditOpen.value = false;
+  await refetch();
 };
-
-// console.log(rowsWithActions);
 </script>
