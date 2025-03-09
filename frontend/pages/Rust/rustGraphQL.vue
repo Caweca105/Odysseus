@@ -194,10 +194,18 @@ const DELETE_USER = gql`
   }
 `;
 
-const { result, loading, error, refetch } = useQuery(GET_USERS);
-const { mutate: createUserMutate } = useMutation(CREATE_USER);
-const { mutate: updateUserMutate } = useMutation(UPDATE_USER);
-const { mutate: deleteUserMutate } = useMutation(DELETE_USER);
+const { result, loading, error, refetch } = useQuery(GET_USERS, null, {
+  clientId: "RustGraphQL",
+});
+const { mutate: createUserMutate } = useMutation(CREATE_USER, {
+  clientId: "RustGraphQL",
+});
+const { mutate: updateUserMutate } = useMutation(UPDATE_USER, {
+  clientId: "RustGraphQL",
+});
+const { mutate: deleteUserMutate } = useMutation(DELETE_USER, {
+  clientId: "RustGraphQL",
+});
 
 const newUser = ref({
   username: "",
