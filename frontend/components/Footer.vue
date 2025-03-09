@@ -1,13 +1,16 @@
 <script setup lang="ts">
 const links = [
   {
-    label: "Rust With GraphQL",
-    to: "/rustGraphQL",
+    label: "Rust",
+    to: "/rust",
   },
   {
-    label: "Django With GraphQL",
-    icon: "i-heroicons-book-open",
-    to: "/djangoGraphQL",
+    label: "Django",
+    to: "/django",
+  },
+  {
+    label: "Laravel",
+    to: "/laravel",
   },
 ];
 </script>

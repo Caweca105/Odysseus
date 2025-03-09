@@ -6,14 +6,34 @@ const links = [
     to: "/",
   },
   {
-    label: "Rust With GraphQL",
+    label: "Rust",
     icon: "i-heroicons-book-open",
-    to: "/rustGraphQL",
+    to: "/rust",
+    children: [
+      { label: "Rust With GraphQL", to: "/rust/rustGraphQL" },
+      { label: "Rust with RestAPI" },
+      { label: "Rust with gRPC" },
+    ],
   },
   {
-    label: "Django With GraphQL",
+    label: "Django",
     icon: "i-heroicons-book-open",
-    to: "/djangoGraphQL",
+    to: "/django",
+    children: [
+      { label: "Django With GraphQL", to: "/django/djangoGraphQL" },
+      { label: "Django with RestAPI" },
+      { label: "Django with gRPC" },
+    ],
+  },
+  {
+    label: "Laravel",
+    icon: "i-heroicons-book-open",
+    to: "/laravel",
+    children: [
+      { label: "Laravel With GraphQL", to: "/laravel/laravelGraphQL" },
+      { label: "Laravel with RestAPI" },
+      { label: "Laravel with gRPC" },
+    ],
   },
 ];
 </script>
@@ -25,9 +45,7 @@ const links = [
     </template>
 
     <template #right>
-      <UTooltip text="Change my theme">
-        <UColorModeButton />
-      </UTooltip>
+      <UColorModeSelect class="w-28" />
 
       <UTooltip text="This will take you to my repositories on GitHub">
         <UButton
