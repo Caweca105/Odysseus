@@ -1,0 +1,72 @@
+"""
+The User type matching our database columns.
+"""
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  age: Int
+  comment: String
+  location: String
+  name: String
+  preferences: String
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+"""
+Input for creating a user.
+"""
+input NewUserInput {
+  username: String!
+  email: String!
+  age: Int
+  comment: String
+  location: String
+  name: String
+  preferences: String
+}
+
+"""
+Input for updating a user.
+"""
+input UpdateUserInput {
+  id: ID!
+  username: String
+  email: String
+  age: Int
+  comment: String
+  location: String
+  name: String
+  preferences: String
+}
+
+type Query {
+  """
+  Get a single user by ID.
+  """
+  user(id: ID!): User @field(resolver: "App\\GraphQL\\Queries\\UserQuery@user")
+
+  """
+  List all users.
+  """
+  users: [User!]! @field(resolver: "App\\GraphQL\\Queries\\UserQuery@users")
+}
+
+type Mutation {
+  """
+  Create a new user.
+  """
+  createUser(input: NewUserInput!): User @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@createUser")
+
+  """
+  Update an existing user.
+  """
+  updateUser(input: UpdateUserInput!): User @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@updateUser")
+
+  """
+  Delete a user by ID.
+  Returns true if the user was deleted, false otherwise.
+  """
+  deleteUser(id: ID!): Boolean @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@deleteUser")
+}
