@@ -10,7 +10,7 @@ use sqlx::PgPool;
 
 #[derive(sqlx::FromRow, async_graphql::SimpleObject, Serialize)]
 pub struct User {
-    pub id: i32,
+    pub id: i64,
     pub username: String,
     pub email: String,
     pub age: Option<i32>,
