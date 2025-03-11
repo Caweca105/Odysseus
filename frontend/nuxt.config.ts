@@ -3,10 +3,10 @@ export default defineNuxtConfig({
   ssr: false,
   runtimeConfig: {
     public: {
-      // Set your backend URL via an environment variable, fallback to localhost
       graphqlRustEndpoint: process.env.GRAPHQL_RUST_ENDPOINT || 'http://localhost:8000/graphql',
       graphqlDjangoEndpoint: process.env.GRAPHQL_DJANGO_ENDPOINT || 'http://localhost:8001/graphql',
       graphqlLaravelEndpoint: process.env.GRAPHQL_LARAVEL_ENDPOINT || 'http://localhost:8002/graphql',
+      restRustEndpoint: process.env.REST_RUST_ENDPOINT || 'http://localhost:8000/api'
     }
   },
   compatibilityDate: '2024-11-01',

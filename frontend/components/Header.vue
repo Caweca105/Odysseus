@@ -11,7 +11,7 @@ const links = [
     to: "/rust",
     children: [
       { label: "Rust With GraphQL", to: "/rust/rustGraphQL" },
-      { label: "Rust with RestAPI" },
+      { label: "Rust with RestAPI", to: "/rust/rustRestAPI" },
       { label: "Rust with gRPC" },
     ],
   },
