@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
+  css: ['~/assets/css/main.css'],
   runtimeConfig: {
     public: {
       graphqlRustEndpoint: process.env.GRAPHQL_RUST_ENDPOINT || 'http://localhost:8000/graphql',
@@ -11,8 +12,8 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  extends: ['@nuxt/ui-pro'],
-  modules: ['@nuxtjs/apollo', '@nuxt/ui'],
+  extends: [],
+  modules: ['@nuxtjs/apollo', '@nuxt/ui', '@nuxt/ui-pro'],
   apollo: {
     clients: {
       RustGraphQL: {

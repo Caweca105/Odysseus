@@ -78,7 +78,16 @@ class UpdateUser(graphene.Mutation):
             user.username = input.username
         if input.email is not None:
             user.email = input.email
-        # ... same pattern for other fields ...
+        if input.age is not None:
+            user.age = input.age
+        if input.comment is not None:
+            user.comment = input.comment
+        if input.location is not None:
+            user.location = input.location
+        if input.name is not None:
+            user.name = input.name
+        if input.preferences is not None:
+            user.preferences = input.preferences
         user.save()
 
         return UpdateUser(user=user, ok=True)

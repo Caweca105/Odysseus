@@ -31,7 +31,7 @@
               icon="i-heroicons-pencil-square"
             />
             <UButton
-              @click="deleteUser(row.id)"
+              @click="deleteUser(Number(row.id))"
               :ui="{ rounded: 'rounded-full' }"
               icon="i-heroicons-trash"
             />
@@ -82,7 +82,6 @@
         </div>
       </UModal>
 
-      <!-- Edit User Modal -->
       <UModal v-model="isEditOpen">
         <div v-if="selectedUser" class="p-4 mb-4 pb-4 flex flex-col gap-4">
           <h2>Edit User</h2>
@@ -288,9 +287,10 @@ const openModal = (user: any) => {
 
 const updateUser = async () => {
   if (!selectedUser.value) return;
+
   await updateUserMutate({
     input: {
-      id: Number(selectedUser.value.id), // convert id to a number
+      id: Number(selectedUser.value.id),
       email: selectedUser.value.email,
       age: selectedUser.value.age,
       comment: selectedUser.value.comment,
@@ -299,6 +299,7 @@ const updateUser = async () => {
       preferences: selectedUser.value.preferences,
     },
   });
+  console.log("Update response:", response);
   isEditOpen.value = false;
   await refetch();
 };
