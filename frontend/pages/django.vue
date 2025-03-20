@@ -18,7 +18,7 @@
           every common web development task.
         </UText>
 
-        <UBadge color="red" variant="outline">
+        <UBadge color="error" variant="outline">
           Django prioritizes security with built-in protections against SQL injection,
           cross-site scripting (XSS), cross-site request forgery (CSRF), and clickjacking.
         </UBadge>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const links = [
+const items = [
   {
     label: "Rust",
     to: "/rust",
@@ -16,13 +16,15 @@ const links = [
 </script>
 
 <template>
-  <UFooter :links="links">
+  <UFooter>
     <template #left> Copyright © {{ new Date().getFullYear() }} </template>
+
+    <UNavigationMenu :items="items" variant="link" />
 
     <template #right>
       <UButton
         icon="i-simple-icons-github"
-        color="gray"
+        color="neutral"
         variant="ghost"
         to="https://github.com/Caweca105?tab=repositories"
         target="_blank"

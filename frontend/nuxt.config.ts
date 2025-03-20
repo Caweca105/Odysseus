@@ -7,7 +7,8 @@ export default defineNuxtConfig({
       graphqlRustEndpoint: process.env.GRAPHQL_RUST_ENDPOINT || 'http://localhost:8000/graphql',
       graphqlDjangoEndpoint: process.env.GRAPHQL_DJANGO_ENDPOINT || 'http://localhost:8001/graphql',
       graphqlLaravelEndpoint: process.env.GRAPHQL_LARAVEL_ENDPOINT || 'http://localhost:8002/graphql',
-      restRustEndpoint: process.env.REST_RUST_ENDPOINT || 'http://localhost:8000/api'
+      restRustEndpoint: process.env.REST_RUST_ENDPOINT || 'http://localhost:8000/api',
+      restdjangoEndpoint: process.env.REST_DJANGO_ENDPOINT || 'http://localhost:8001/api',
     }
   },
   compatibilityDate: '2024-11-01',

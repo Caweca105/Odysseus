@@ -1,12 +1,9 @@
 <template>
   <UContainer class="p-4">
     <h1>Laravel with GraphQL</h1>
-
-    <!-- Loading and Error States -->
     <div v-if="loading">Loading users…</div>
     <div v-else-if="error">Error: {{ error.message }}</div>
     <div v-else>
-      <!-- Filter + Create Button -->
       <div
         class="flex items-center justify-between px-3 py-3.5 border-b border-gray-200 dark:border-gray-700"
       >
@@ -16,132 +13,167 @@
           clearable
           class="max-w-md"
         />
-        <UButton
-          label="Create"
-          @click="isCreateOpen = true"
-          :ui="{ rounded: 'rounded-full' }"
-          class="ml-4"
-        />
+
+        <!-- Create User Modal -->
+        <UModal>
+          <UButton label="Create" class="ml-4 rounded-full" />
+          <template #content>
+            <div class="p-4 mb-4 pb-4 flex flex-col gap-4">
+              <h2>Create User</h2>
+              <form @submit.prevent="createUser">
+                <UFormField label="Username">
+                  <UInput
+                    placeholder="Enter your username"
+                    v-model="newUser.username"
+                    required
+                  />
+                </UFormField>
+                <UFormField label="Email">
+                  <UInput
+                    placeholder="Enter your email"
+                    v-model="newUser.email"
+                    type="email"
+                    required
+                  />
+                </UFormField>
+                <UFormField label="Age">
+                  <UInput
+                    placeholder="Enter your age"
+                    v-model.number="newUser.age"
+                    type="number"
+                  />
+                </UFormField>
+                <UFormField label="Comment">
+                  <UInput
+                    placeholder="Enter your comment"
+                    v-model="newUser.comment"
+                    type="text"
+                  />
+                </UFormField>
+                <UFormField label="Location">
+                  <UInput
+                    placeholder="Enter your location"
+                    v-model="newUser.location"
+                    type="text"
+                  />
+                </UFormField>
+                <UFormField label="Name">
+                  <UInput
+                    placeholder="Enter your name"
+                    v-model="newUser.name"
+                    type="text"
+                  />
+                </UFormField>
+                <UFormField label="Preferences">
+                  <UInput
+                    placeholder="Enter your preferences"
+                    v-model="newUser.preferences"
+                    type="text"
+                  />
+                </UFormField>
+                <UButton type="submit" label="Create User" class="mt-4 rounded-full" />
+              </form>
+            </div>
+          </template>
+        </UModal>
       </div>
 
-      <!-- Table of Users -->
-      <UTable :rows="rowsWithActions" :columns="columns">
-        <template #actions-data="{ row }">
+      <!-- Users Table -->
+      <UTable :data="rowsWithActions" :columns="columns">
+        <template #action-cell="{ row }">
           <div class="flex gap-1 justify-end">
-            <UButton
-              @click="openModal(row)"
-              :ui="{ rounded: 'rounded-full' }"
-              icon="i-heroicons-pencil-square"
-            />
-            <UButton
-              @click="deleteUser(row.id)"
-              :ui="{ rounded: 'rounded-full' }"
-              icon="i-heroicons-trash"
-            />
+            <UDropdownMenu :items="getDropdownActions(row.original)">
+              <UButton
+                icon="i-lucide-ellipsis-vertical"
+                color="neutral"
+                variant="ghost"
+              />
+            </UDropdownMenu>
+            <!-- Edit User Modal -->
+            <UModal v-model:open="editModalOpen">
+              <template #content>
+                <div v-if="selectedUser" class="p-4 mb-4 pb-4 flex flex-col gap-4">
+                  <h2>Edit User</h2>
+                  <form @submit.prevent="updateUser">
+                    <UFormField label="Email">
+                      <UInput
+                        placeholder="Enter your email"
+                        v-model="selectedUser.email"
+                        type="email"
+                        required
+                      />
+                    </UFormField>
+                    <UFormField label="Age">
+                      <UInput
+                        placeholder="Enter your age"
+                        v-model.number="selectedUser.age"
+                        type="number"
+                      />
+                    </UFormField>
+                    <UFormField label="Comment">
+                      <UInput
+                        placeholder="Enter your comment"
+                        v-model="selectedUser.comment"
+                        type="text"
+                      />
+                    </UFormField>
+                    <UFormField label="Location">
+                      <UInput
+                        placeholder="Enter your location"
+                        v-model="selectedUser.location"
+                        type="text"
+                      />
+                    </UFormField>
+                    <UFormField label="Name">
+                      <UInput
+                        placeholder="Enter your name"
+                        v-model="selectedUser.name"
+                        type="text"
+                      />
+                    </UFormField>
+                    <UFormField label="Preferences">
+                      <UInput
+                        placeholder="Enter your preferences"
+                        v-model="selectedUser.preferences"
+                        type="text"
+                      />
+                    </UFormField>
+                    <UButton
+                      type="submit"
+                      label="Update User"
+                      class="mt-4 rounded-full"
+                    />
+                  </form>
+                </div>
+              </template>
+            </UModal>
           </div>
         </template>
       </UTable>
-
-      <!-- Create User Modal -->
-      <UModal v-model="isCreateOpen">
-        <div class="p-4 mb-4 pb-4 flex flex-col gap-4">
-          <h2>Create User</h2>
-          <form @submit.prevent="createUser">
-            <div>
-              <label>Username:</label>
-              <UInput v-model="newUser.username" type="text" required />
-            </div>
-            <div>
-              <label>Email:</label>
-              <UInput v-model="newUser.email" type="email" required />
-            </div>
-            <div>
-              <label>Age:</label>
-              <UInput v-model.number="newUser.age" type="number" />
-            </div>
-            <div>
-              <label>Comment:</label>
-              <UInput v-model="newUser.comment" type="text" />
-            </div>
-            <div>
-              <label>Location:</label>
-              <UInput v-model="newUser.location" type="text" />
-            </div>
-            <div>
-              <label>Name:</label>
-              <UInput v-model="newUser.name" type="text" />
-            </div>
-            <div>
-              <label>Preferences:</label>
-              <UInput v-model="newUser.preferences" type="text" />
-            </div>
-            <UButton
-              type="submit"
-              label="Create User"
-              :ui="{ rounded: 'rounded-full' }"
-              class="mt-4"
-            />
-          </form>
-        </div>
-      </UModal>
-
-      <!-- Edit User Modal -->
-      <UModal v-model="isEditOpen">
-        <div v-if="selectedUser" class="p-4 mb-4 pb-4 flex flex-col gap-4">
-          <h2>Edit User</h2>
-          <form @submit.prevent="updateUser">
-            <div>
-              <label>Email:</label>
-              <UInput v-model="selectedUser.email" type="email" required />
-            </div>
-            <div>
-              <label>Age:</label>
-              <UInput v-model.number="selectedUser.age" type="number" />
-            </div>
-            <div>
-              <label>Comment:</label>
-              <UInput v-model="selectedUser.comment" type="text" />
-            </div>
-            <div>
-              <label>Location:</label>
-              <UInput v-model="selectedUser.location" type="text" />
-            </div>
-            <div>
-              <label>Name:</label>
-              <UInput v-model="selectedUser.name" type="text" />
-            </div>
-            <div>
-              <label>Preferences:</label>
-              <UInput v-model="selectedUser.preferences" type="text" />
-            </div>
-            <UButton
-              type="submit"
-              label="Update User"
-              :ui="{ rounded: 'rounded-full' }"
-              class="mt-4"
-            />
-          </form>
-        </div>
-      </UModal>
     </div>
   </UContainer>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, h } from "vue";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
+import type { TableColumn, DropdownMenuItem } from "@nuxt/ui";
 
-/**
- * Modals and selected user state
- */
-const isCreateOpen = ref(false);
-const isEditOpen = ref(false);
+const editModalOpen = ref(false);
 const selectedUser = ref<any>(null);
 
-/**
- * GQL: Queries & Mutations (Laravel backend)
- */
+const defaultNewUser = {
+  username: "",
+  email: "",
+  age: null as number | null,
+  comment: "",
+  location: "",
+  name: "",
+  preferences: "",
+};
+const newUser = ref({ ...defaultNewUser });
+
 const GET_USERS = gql`
   query {
     users {
@@ -193,13 +225,9 @@ const DELETE_USER = gql`
   }
 `;
 
-/**
- * Apollo Queries/Mutations
- */
 const { result, loading, error, refetch } = useQuery(GET_USERS, null, {
   clientId: "LaravelGraphQL",
 });
-
 const { mutate: createUserMutate } = useMutation(CREATE_USER, {
   clientId: "LaravelGraphQL",
 });
@@ -210,78 +238,84 @@ const { mutate: deleteUserMutate } = useMutation(DELETE_USER, {
   clientId: "LaravelGraphQL",
 });
 
-/**
- * New user form
- */
-const newUser = ref({
-  username: "",
-  email: "",
-  age: null as number | null,
-  comment: "",
-  location: "",
-  name: "",
-  preferences: "",
-});
-
-/**
- * Table columns + row filtering
- */
-const columns = [
-  { key: "username", label: "Username" },
-  { key: "email", label: "Email" },
-  { key: "age", label: "Age" },
-  { key: "location", label: "Location" },
-  { key: "name", label: "Name" },
-  { key: "actions", label: "Actions" },
+const columns: TableColumn<any>[] = [
+  { accessorKey: "id", header: "ID" },
+  {
+    accessorKey: "name",
+    header: "Name",
+    cell: ({ row }: { row: { original: any } }) =>
+      h("div", { class: "flex items-center gap-3" }, [
+        h("div", null, [
+          h(
+            "p",
+            { class: "font-medium text-(--ui-text-highlighted)" },
+            row.original.name
+          ),
+        ]),
+      ]),
+  },
+  { accessorKey: "email", header: "Email" },
+  { accessorKey: "age", header: "Age" },
+  { accessorKey: "location", header: "Location" },
+  { id: "action" },
 ];
 
-const filter = ref("");
-
-/** Hide empty placeholders. */
 function isEmptyUser(user: any) {
-  const isEmptyField = (field: string | null) => !field || field.trim() === "";
   return (
-    isEmptyField(user.username) &&
-    isEmptyField(user.email) &&
+    !user.username?.trim() &&
+    !user.email?.trim() &&
     user.age === null &&
-    isEmptyField(user.comment) &&
-    isEmptyField(user.location) &&
-    isEmptyField(user.name) &&
-    isEmptyField(user.preferences)
+    !user.comment?.trim() &&
+    !user.location?.trim() &&
+    !user.name?.trim() &&
+    !user.preferences?.trim()
   );
 }
 
+const filter = ref("");
+
 const rowsWithActions = computed(() => {
-  const users = (result.value?.users ?? []).filter(
-    (user: any) => user && !isEmptyUser(user)
-  );
+  const users = (result.value?.users ?? [])
+    .filter((user: any) => user && !isEmptyUser(user))
+    .sort((a: any, b: any) => Number(a.id) - Number(b.id));
 
-  if (!filter.value) {
-    return users.map((u: any) => ({ ...u, actions: "" }));
-  }
+  const filtered = !filter.value
+    ? users
+    : users.filter((user: any) =>
+        Object.values(user).join(" ").toLowerCase().includes(filter.value.toLowerCase())
+      );
 
-  const searchTerm = filter.value.toLowerCase();
-  const filtered = users.filter((user: any) =>
-    Object.values(user).some((val) => val?.toString().toLowerCase().includes(searchTerm))
-  );
-  return filtered.map((u: any) => ({ ...u, actions: "" }));
+  return filtered.map((user: any) => ({ ...user, actions: "" }));
 });
 
-/**
- * CRUD Methods
- */
+function getDropdownActions(user: any): DropdownMenuItem[][] {
+  return [
+    [
+      {
+        label: "Edit",
+        icon: "i-lucide-edit",
+        onSelect: () => {
+          selectedUser.value = { ...user };
+          editModalOpen.value = true;
+        },
+      },
+      {
+        label: "Delete",
+        icon: "i-lucide-trash",
+        color: "error",
+        onSelect: () => {
+          if (confirm("Are you sure you want to delete this user?")) {
+            deleteUser(user.id);
+          }
+        },
+      },
+    ],
+  ];
+}
+
 async function createUser() {
   await createUserMutate({ input: newUser.value });
-  newUser.value = {
-    username: "",
-    email: "",
-    age: null,
-    comment: "",
-    location: "",
-    name: "",
-    preferences: "",
-  };
-  isCreateOpen.value = false;
+  newUser.value = { ...defaultNewUser };
   await refetch();
 }
 
@@ -293,7 +327,7 @@ async function deleteUser(id: string | number) {
 function openModal(user: any) {
   if (!user) return;
   selectedUser.value = { ...user };
-  isEditOpen.value = true;
+  editModalOpen.value = true;
 }
 
 async function updateUser() {
@@ -309,7 +343,7 @@ async function updateUser() {
       preferences: selectedUser.value.preferences,
     },
   });
-  isEditOpen.value = false;
+  editModalOpen.value = false;
   await refetch();
 }
 </script>

@@ -30,7 +30,7 @@
 
         <br />
 
-        <UBadge variant="outline" color="green">
+        <UBadge variant="outline" color="success">
           Rust has been the <strong>"most loved programming language"</strong> in the
           Stack Overflow Developer Survey every year since 2016..
         </UBadge>
@@ -48,7 +48,7 @@
           device drivers and operating systems.
         </p>
         <br />
-        <UBadge variant="outline" color="red">
+        <UBadge variant="outline" color="error">
           Rust is designed to be memory safe, and it does not permit null or dangling
           pointers.
         </UBadge>

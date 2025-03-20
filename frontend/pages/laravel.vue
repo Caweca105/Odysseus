@@ -20,7 +20,7 @@
 
         <br />
 
-        <UBadge variant="outline" color="blue">
+        <UBadge variant="outline" color="info">
           Laravel uses the MVC (Model-View-Controller) architecture pattern, ensuring
           clear separation between logic, UI, and data.
         </UBadge>
