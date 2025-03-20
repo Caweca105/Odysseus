@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'graphene_django',
-    'graphqlapi'
+    'graphqlapi',
+    'rest_framework',
 ]
 
 GRAPHENE = {

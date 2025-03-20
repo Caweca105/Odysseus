@@ -22,7 +22,7 @@ const items = computed(() => [
     to: "/django",
     children: [
       { label: "Django With GraphQL", to: "/django/djangoGraphQL" },
-      { label: "Django with RestAPI" },
+      { label: "Django with RestAPI", to: "/django/djangoRest" },
       { label: "Django with gRPC" },
     ],
     active: route.path.startsWith("/django"),
@@ -32,7 +32,7 @@ const items = computed(() => [
     to: "/laravel",
     children: [
       { label: "Laravel With GraphQL", to: "/laravel/laravelGraphQL" },
-      { label: "Laravel with RestAPI" },
+      { label: "Laravel with RestAPI", to: "/laravel/laravelRest" },
       { label: "Laravel with gRPC" },
     ],
     active: route.path.startsWith("/laravel"),
