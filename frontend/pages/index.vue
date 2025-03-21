@@ -4,7 +4,7 @@
       <UPageHeader
         headline="Welcome to my page"
         subheadline="I was curious... A saga by me"
-        description="What happens when someone is curious and likes to mess around? Exactly, they end up creating this page."
+        description="What happens when someone is curious and likes to mess around? Exactly, they end up creating this mess."
       />
     </UPage>
   </UContainer>
