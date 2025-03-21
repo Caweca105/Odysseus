@@ -13,7 +13,7 @@ const items = computed(() => [
     children: [
       { label: "Rust With GraphQL", to: "/rust/rustGraphQL" },
       { label: "Rust with RestAPI", to: "/rust/rustRestAPI" },
-      { label: "Rust with gRPC" },
+      { label: "Rust with gRPC", to: "/rust/rustgRPC" },
     ],
     active: route.path.startsWith("/rust"),
   },
@@ -23,7 +23,7 @@ const items = computed(() => [
     children: [
       { label: "Django With GraphQL", to: "/django/djangoGraphQL" },
       { label: "Django with RestAPI", to: "/django/djangoRest" },
-      { label: "Django with gRPC" },
+      { label: "Django with gRPC", to: "/django/djangogRPC" },
     ],
     active: route.path.startsWith("/django"),
   },
@@ -33,7 +33,7 @@ const items = computed(() => [
     children: [
       { label: "Laravel With GraphQL", to: "/laravel/laravelGraphQL" },
       { label: "Laravel with RestAPI", to: "/laravel/laravelRest" },
-      { label: "Laravel with gRPC" },
+      { label: "Laravel with gRPC", to: "/laravel/laravelgRPC" },
     ],
     active: route.path.startsWith("/laravel"),
   },
