@@ -11,6 +11,25 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
+  djangographql:
+    build: 
+      context: ./djangographql
+      dockerfile: Dockerfile
+    container_name: djangographql
+    depends_on:
+      - postgres
+    ports:
+      - "8001:8001"
+    environment:
+      DATABASE_URL: "postgresql://diogolemos:vaporeon@postgres:5432/vaporeon"
+      POSTGRES_DB: vaporeon
+      POSTGRES_USER: diogolemos
+      POSTGRES_PASSWORD: vaporeon
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+    volumes:
+      - ./djangographql:/app
+    restart: always
   backend:
     build: 
       context: ./backend
@@ -24,12 +43,32 @@ services:
       DATABASE_URL: "postgres://diogolemos:vaporeon@postgres:5432/vaporeon"
     restart: always
 
+  laravelgraphql:
+    build:
+      context: ./laravel-graphql
+      dockerfile: Dockerfile
+    container_name: laravelgraphql
+    depends_on:
+      - postgres
+    ports:
+      - "8002:8002"
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: vaporeon
+      DB_USERNAME: diogolemos
+      DB_PASSWORD: vaporeon
+    volumes:
+      - ./laravel-graphql:/app
+    restart: always
+
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        NUXT_UI_PRO_LICENSE: "BB9C17E6-CD38-44FD-B804-441CA336D608"
+        NUXT_UI_PRO_LICENSE: ${NUXT_UI_PRO_LICENSE}
     container_name: frontend_app
     volumes:
       - ./frontend:/app
